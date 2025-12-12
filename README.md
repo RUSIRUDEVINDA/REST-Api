@@ -6,12 +6,12 @@ This project is structured for future expansion, including product modules, vali
 
 Features
 
-.Basic REST API architecture
-.User CRUD operations:
-.Create user
-.Get all users
-.Get user by ID
-.Update user
-.Delete user
-.MongoDB database connection using Mongoose
-.Clean folder structure for scalability
+1.Basic REST API architecture
+2.User CRUD operations:
+3.Create user
+4.Get all users
+5.Get user by ID
+6.Update user
+7.Delete user
+8.MongoDB database connection using Mongoose
+9.Clean folder structure for scalability
