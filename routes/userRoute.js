@@ -5,18 +5,18 @@ const userController = require('../controllers/userController.js')
 // Define routes and link to controller functions
 
 // POST /api/users        -> create user
-router.post('/User',userController.createUser);
+router.post('/',userController.createUser);
 
 // GET /api/users         -> list users
-router.get('/User',userController.getUsers);
+router.get('/',userController.getUsers);
 
 // GET /api/users/:id     -> get user by id
-router.get('/User/:id',userController.getUserById)
+router.get('/:id',userController.getUserById)
 
 // PUT /api/users/:id -> update user
-router.put('/User/:id',userController.updateUser);
+router.put('/:id',userController.updateUser);
 
 // DELETE /api/users/:id  -> delete user
-router.delete('/User/:id',userController.deleteuser);
+router.delete('/:id',userController.deleteuser);
 
 module.exports = router;
