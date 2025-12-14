@@ -3,12 +3,11 @@ const app = express();
 const connectDB = require('./config/db.js')
 const cors = require('cors');
 
-
 require('dotenv').config(); //load env
 
 //routes
 const userRoutes = require('./routes/userRoute.js');
-const productRoutes = require('./routes/productRoute.js');
+const todoRoutes = require('./routes/todoRoute.js');
 const errorHandler = require('./middleware/errorHandler.js');
 
 connectDB(); //connect to database
@@ -23,7 +22,8 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/api/users',userRoutes); //this route will handle all user related requests
-app.use('/api/products', productRoutes);
+app.use('/api/todos', todoRoutes);
+
 
 //central error handler:all errors forwarded here
 app.use(errorHandler);

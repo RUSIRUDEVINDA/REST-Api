@@ -1,4 +1,79 @@
 const User = require('../models/User.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+// REGISTER
+exports.register = async (req, res, next) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).json({ message: 'User registered' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// LOGIN
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// GET own profile
+exports.getProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// UPDATE own profile
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      req.body,
+      { new: true }
+    ).select('-password');
+
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// DELETE own account
+exports.deleteProfile = async (req, res, next) => {
+  try {
+    await User.findByIdAndDelete(req.userId);
+    res.json({ message: 'Account deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //create new user
 exports.createUser = async(req,res,next)=>{
@@ -28,7 +103,7 @@ exports.createUser = async(req,res,next)=>{
 
 exports.getUsers = async(req,res,next)=>{
     try{
-        const users = await User.findAll().sort({createdAt:-1});
+        const users = await User.find().sort({createdAt:-1});
         res.status(200).json(users);
     }catch(err){
         res.status(500).json({message : 'Error retrieving users',err:err.message})

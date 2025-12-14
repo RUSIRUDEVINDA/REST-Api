@@ -1,8 +1,18 @@
 const express = require('express');
 const router = express.Router(); // const router is used to create modular route handlers
 const userController = require('../controllers/userController.js')
+const auth = require('../middleware/auth.js');
 
-// Define routes and link to controller functions
+// PROTECTED USER ROUTES (JWT REQUIRED)
+
+// Get logged-in user's profile
+router.get('/me', auth, userController.getProfile);
+
+// Update logged-in user's profile
+router.put('/me', auth, userController.updateProfile);
+
+// Delete logged-in user's account
+router.delete('/me', auth, userController.deleteProfile);
 
 // POST /api/users        -> create user
 router.post('/',userController.createUser);
